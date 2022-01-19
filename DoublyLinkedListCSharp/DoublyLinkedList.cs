@@ -37,6 +37,7 @@ public class DoublyLinkedList<T> : IEnumerable<T>
         }
 
         LastNode = new DoublyLinkedNode<T> {Value = array.Last(), Previous = previousNode};
+
         previousNode.Next = LastNode;
         Count = array.Length;
     }
@@ -119,6 +120,53 @@ public class DoublyLinkedList<T> : IEnumerable<T>
         if (LastNode is not null) LastNode.Next = null;
 
         node?.Invalidate();
+    }
+
+    public void Clear()
+    {
+        var currentNode = FirstNode;
+
+        while (currentNode is not null)
+        {
+            var nextNode = currentNode.Next;
+
+            currentNode.Invalidate();
+            currentNode = nextNode;
+        }
+
+        FirstNode = null;
+        LastNode = null;
+        Count = 0;
+    }
+
+    public DoublyLinkedNode<T>? Find(T value)
+    {
+        var node = FirstNode;
+        var equalityComparer = EqualityComparer<T>.Default;
+
+        while (node != null)
+        {
+            if (equalityComparer.Equals(node.Value, value)) return node;
+
+            node = node.Next;
+        }
+
+        return null;
+    }
+
+    public DoublyLinkedNode<T>? FindLast(T value)
+    {
+        var node = LastNode;
+        var equalityComparer = EqualityComparer<T>.Default;
+
+        while (node != null)
+        {
+            if (equalityComparer.Equals(node.Value, value)) return node;
+
+            node = node.Previous;
+        }
+
+        return null;
     }
 
     public IEnumerator<T> GetEnumerator()

@@ -1,6 +1,6 @@
 namespace DoublyLinkedListCSharp;
 
-public class DoublyLinkedNode<T>
+public record DoublyLinkedNode<T>
 {
     public T Value { get; set; }
 

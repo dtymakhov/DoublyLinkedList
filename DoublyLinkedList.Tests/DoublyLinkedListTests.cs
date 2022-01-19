@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Linq;
 using Xunit;
 using FluentAssertions;
 using DoublyLinkedListCSharp;
@@ -66,5 +67,86 @@ public class DoublyLinkedListTests
         // Assert
         linkedList.FirstNode?.Value.Should().Be(firstValue);
         linkedList.LastNode?.Value.Should().Be(secondValue);
+    }
+
+    [Fact]
+    public void FindExistingValue()
+    {
+        // Arrange
+        var value = 1;
+        var nextValue = 87;
+        List<int> list = new() {2, 3, 4, 5, value, nextValue, 6, 1, 3};
+        DoublyLinkedList<int> linkedList = new(list);
+
+        // Act
+        var node = linkedList.Find(value);
+
+        // Assert
+        node?.Value.Should().Be(value);
+        node?.Next?.Value.Should().Be(nextValue);
+    }
+
+    [Fact]
+    public void FindNotExistingValue()
+    {
+        // Arrange
+        var value = 123;
+        List<int> list = new() {2, 3, 4, 5, 4, 6};
+        DoublyLinkedList<int> linkedList = new(list);
+
+        // Act
+        var node = linkedList.Find(value);
+
+        // Assert
+        node.Should().BeNull();
+    }
+
+    [Fact]
+    public void FindLastExistingValue()
+    {
+        // Arrange
+        var value = 1;
+        var previousValue = 87;
+        List<int> list = new() {1, 2, 3, 4, previousValue, value, 4, 6};
+        DoublyLinkedList<int> linkedList = new(list);
+
+        // Act
+        var node = linkedList.FindLast(value);
+
+        // Assert
+        node?.Value.Should().Be(value);
+        node?.Previous?.Value.Should().Be(previousValue);
+    }
+
+    [Fact]
+    public void FindLastNotExistingValue()
+    {
+        // Arrange
+        var value = 123;
+        List<int> list = new() {2, 3, 4, 5, 4, 6};
+        DoublyLinkedList<int> linkedList = new(list);
+
+        // Act
+        var node = linkedList.FindLast(value);
+
+        // Assert
+        node.Should().BeNull();
+    }
+    
+    [Fact]
+    public void ClearDoublyLinkedList()
+    {
+        // Arrange
+        List<int> list = new() {2, 3, 4, 5, 4, 6};
+        DoublyLinkedList<int> linkedList = new(list);
+
+        // Act
+        linkedList.Clear();
+
+        // Assert
+        linkedList.FirstNode.Should().BeNull();
+        linkedList.LastNode.Should().BeNull();
+        linkedList.Count.Should().Be(0);
+        linkedList.Count().Should().Be(0);
     }
 }
