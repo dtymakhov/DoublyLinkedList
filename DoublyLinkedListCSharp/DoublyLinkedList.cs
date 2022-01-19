@@ -8,6 +8,8 @@ public class DoublyLinkedList<T> : IEnumerable<DoublyLinkedNode<T>>
 
     public DoublyLinkedNode<T>? LastNode { get; private set; }
 
+    public int Count { get; private set; }
+
     public DoublyLinkedList()
     {
     }
@@ -15,6 +17,8 @@ public class DoublyLinkedList<T> : IEnumerable<DoublyLinkedNode<T>>
     public DoublyLinkedList(IEnumerable<T> enumerable)
     {
         var array = enumerable as T[] ?? enumerable.ToArray();
+
+        if (!array.Any()) return;
 
         FirstNode = new DoublyLinkedNode<T> {Value = array.First()};
 
@@ -32,6 +36,7 @@ public class DoublyLinkedList<T> : IEnumerable<DoublyLinkedNode<T>>
 
         LastNode = new DoublyLinkedNode<T> {Value = array.Last(), Previous = previousNode};
         previousNode.Next = LastNode;
+        Count = array.Length;
     }
 
     public void AddAfter(DoublyLinkedNode<T> node, T item)
@@ -43,6 +48,8 @@ public class DoublyLinkedList<T> : IEnumerable<DoublyLinkedNode<T>>
         newNode.Next = node.Next;
         node.Next.Previous = newNode;
         node.Next = newNode;
+
+        Count++;
     }
 
     public void AddBefore(DoublyLinkedNode<T> node, T item)
@@ -54,6 +61,8 @@ public class DoublyLinkedList<T> : IEnumerable<DoublyLinkedNode<T>>
         newNode.Previous = node.Previous;
         node.Previous.Next = newNode;
         node.Previous = newNode;
+
+        Count++;
     }
 
     public void AddLast(T item)
@@ -74,6 +83,7 @@ public class DoublyLinkedList<T> : IEnumerable<DoublyLinkedNode<T>>
             var newNode = new DoublyLinkedNode<T> {Value = item};
             FirstNode = newNode;
             LastNode = newNode;
+            Count++;
 
             return;
         }
