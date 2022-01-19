@@ -4,9 +4,9 @@ namespace DoublyLinkedListCSharp;
 
 public class DoublyLinkedList<T> : IEnumerable<DoublyLinkedNode<T>>
 {
-    private DoublyLinkedNode<T>? _firstNode;
+    public DoublyLinkedNode<T>? FirstNode { get; private set; }
 
-    private DoublyLinkedNode<T>? _lastNode;
+    public DoublyLinkedNode<T>? LastNode { get; private set; }
 
     public DoublyLinkedList()
     {
@@ -16,9 +16,9 @@ public class DoublyLinkedList<T> : IEnumerable<DoublyLinkedNode<T>>
     {
         var array = enumerable as T[] ?? enumerable.ToArray();
 
-        _firstNode = new DoublyLinkedNode<T> {Value = array.First()};
+        FirstNode = new DoublyLinkedNode<T> {Value = array.First()};
 
-        var previousNode = _firstNode;
+        var previousNode = FirstNode;
 
         if (array.Length > 2)
         {
@@ -30,11 +30,11 @@ public class DoublyLinkedList<T> : IEnumerable<DoublyLinkedNode<T>>
             }
         }
 
-        _lastNode = new DoublyLinkedNode<T> {Value = array.Last(), Previous = previousNode};
-        previousNode.Next = _lastNode;
+        LastNode = new DoublyLinkedNode<T> {Value = array.Last(), Previous = previousNode};
+        previousNode.Next = LastNode;
     }
 
-    public void InsertAfter(DoublyLinkedNode<T> node, T item)
+    public void AddAfter(DoublyLinkedNode<T> node, T item)
     {
         var newNode = new DoublyLinkedNode<T> {Value = item, Previous = node};
 
@@ -45,7 +45,7 @@ public class DoublyLinkedList<T> : IEnumerable<DoublyLinkedNode<T>>
         node.Next = newNode;
     }
 
-    public void InsertBefore(DoublyLinkedNode<T> node, T item)
+    public void AddBefore(DoublyLinkedNode<T> node, T item)
     {
         var newNode = new DoublyLinkedNode<T> {Value = item, Next = node};
 
@@ -56,34 +56,34 @@ public class DoublyLinkedList<T> : IEnumerable<DoublyLinkedNode<T>>
         node.Previous = newNode;
     }
 
-    public void Insert(T item)
+    public void AddLast(T item)
     {
-        if (_lastNode is null)
+        if (LastNode is null)
         {
-            InsertStart(item);
+            AddFirst(item);
             return;
         }
 
-        InsertAfter(_lastNode, item);
+        AddAfter(LastNode, item);
     }
 
-    public void InsertStart(T item)
+    public void AddFirst(T item)
     {
-        if (_firstNode is null)
+        if (FirstNode is null)
         {
             var newNode = new DoublyLinkedNode<T> {Value = item};
-            _firstNode = newNode;
-            _lastNode = newNode;
+            FirstNode = newNode;
+            LastNode = newNode;
 
             return;
         }
 
-        InsertBefore(_firstNode, item);
+        AddBefore(FirstNode, item);
     }
 
     public IEnumerator<DoublyLinkedNode<T>> GetEnumerator()
     {
-        var currentNode = _firstNode;
+        var currentNode = FirstNode;
 
         while (currentNode is not null)
         {
