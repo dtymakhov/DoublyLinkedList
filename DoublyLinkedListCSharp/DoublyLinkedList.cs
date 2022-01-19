@@ -20,11 +20,14 @@ public class DoublyLinkedList<T> : IEnumerable<DoublyLinkedNode<T>>
 
         var previousNode = _firstNode;
 
-        for (var i = 1; i < array.Length - 2; i++)
+        if (array.Length > 2)
         {
-            var node = new DoublyLinkedNode<T> {Value = array[i], Previous = previousNode};
-            previousNode.Next = node;
-            previousNode = node;
+            for (var i = 1; i < array.Length - 1; i++)
+            {
+                var node = new DoublyLinkedNode<T> {Value = array[i], Previous = previousNode};
+                previousNode.Next = node;
+                previousNode = node;
+            }
         }
 
         _lastNode = new DoublyLinkedNode<T> {Value = array.Last(), Previous = previousNode};
