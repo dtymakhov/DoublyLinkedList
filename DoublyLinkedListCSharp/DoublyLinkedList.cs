@@ -1,8 +1,10 @@
 using System.Collections;
+using System.Diagnostics;
 
 namespace DoublyLinkedListCSharp;
 
-public class DoublyLinkedList<T> : IEnumerable<DoublyLinkedNode<T>>
+[DebuggerDisplay("Count = {Count}")]
+public class DoublyLinkedList<T> : IEnumerable<T>
 {
     public DoublyLinkedNode<T>? FirstNode { get; private set; }
 
@@ -91,13 +93,41 @@ public class DoublyLinkedList<T> : IEnumerable<DoublyLinkedNode<T>>
         AddBefore(FirstNode, item);
     }
 
-    public IEnumerator<DoublyLinkedNode<T>> GetEnumerator()
+    public void Remove(DoublyLinkedNode<T> node)
+    {
+        if (node.Next is not null) node.Next.Previous = node.Previous;
+        if (node.Previous is not null) node.Previous.Next = node.Next;
+
+        node.Invalidate();
+    }
+
+    public void RemoveFirst()
+    {
+        var node = FirstNode;
+        FirstNode = FirstNode?.Next;
+
+        if (FirstNode is not null) FirstNode.Previous = null;
+
+        node?.Invalidate();
+    }
+
+    public void RemoveLast()
+    {
+        var node = LastNode;
+        LastNode = LastNode?.Previous;
+
+        if (LastNode is not null) LastNode.Next = null;
+
+        node?.Invalidate();
+    }
+
+    public IEnumerator<T> GetEnumerator()
     {
         var currentNode = FirstNode;
 
         while (currentNode is not null)
         {
-            yield return currentNode;
+            yield return currentNode.Value;
             currentNode = currentNode.Next;
         }
     }

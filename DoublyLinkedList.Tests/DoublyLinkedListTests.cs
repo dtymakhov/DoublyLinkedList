@@ -19,9 +19,9 @@ public class DoublyLinkedListTests
         // Assert
         var index = 0;
 
-        foreach (var node in linkedList)
+        foreach (var item in linkedList)
         {
-            node.Value.Should().Be(list[index]);
+            item.Should().Be(list[index]);
             index++;
         }
     }
